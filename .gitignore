@@ -1,0 +1,15 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Database files
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+
+# Other files to ignore
+__pycache__/
+*.pyc
