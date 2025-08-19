@@ -7,7 +7,8 @@ class OCRProject(Base):
     __tablename__ = "ocr_project"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable= True)
+    owner_id = Column(Integer, nullable=False)
+    title = Column(String, nullable= True)
     description = Column(Text, nullable= True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
