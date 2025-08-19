@@ -10,9 +10,9 @@ from app.crud import ocr_project as crud_ocr_project
 router = APIRouter(prefix="/ocr", tags=["OCR"])
 
 # to create a new ocr project
-@router.post("/new", response_model=Project, tatus_code=status.HTTP_201_CREATED)
+@router.post("/new", response_model=Project, status_code=status.HTTP_201_CREATED)
 async def create_project(project: ProjectCreate, db: Session = Depends(get_db)):
-    return crud_ocr_project.create_project(db=db, project=project, owner_id=5) # pass a integer for id for now.later change it to current user id.
+    return crud_ocr_project.create_new_project(db=db, project=project, owner_id=5) # pass a integer for id for now.later change it to current user id.
 
 # get a specific ocr project data by id
 @router.get("/{project_id}/data")
