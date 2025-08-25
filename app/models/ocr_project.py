@@ -2,6 +2,7 @@
 import uuid
 from app.db.database import Base
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy.orm import relationship, Mapped
 
 class OCRProject(Base):
     __tablename__ = "ocr_project"
@@ -13,14 +14,21 @@ class OCRProject(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
+    # the relationship to ocr files (one to many relationship)
+    # so by default sqlalchemy will automatically load related files when query the project object
+    files: Mapped[list["OCRProjectFiles"]] = relationship("OCRProjectFiles", back_populates="project")
+
 
 class OCRProjectFiles(Base):
     __tablename__ = "ocr_project_files"
 
-    id = Column(Integer, primary_key=True)
-    project_id = Column(Integer, ForeignKey("ocr_project.id"), nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    project_id = Column(Integer, ForeignKey("ocr_project.id"))
     file_uuid = Column(String(36), unique=True, nullable=False, default=lambda: str(uuid.uuid4())) #unique id for each file to find the file in cloud
     file_name = Column(String(255), nullable=True)
     file_url = Column(String(1024), nullable=False)
     uploaded_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # relationship back to its project
+    project: Mapped["OCRProject"] = relationship("OCRProject", back_populates="files")
 

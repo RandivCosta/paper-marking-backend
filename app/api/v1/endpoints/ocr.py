@@ -15,8 +15,8 @@ async def create_project(project: ProjectCreate, db: Session = Depends(get_db)):
     return crud_ocr_project.create_new_project(db=db, project=project, owner_id=5) # pass a integer for id for now.later change it to current user id.
 
 # get a specific ocr project data by id
-@router.get("/{project_id}/data")
-async def get_ocr_project_data(project_id: int):
+@router.get("/{project_id}", status_code=status.HTTP_200_OK)
+async def get_ocr_project_data(project_id: int, db: Session = Depends(get_db)):
     # Ensure user has access to this ocr project data
-    return {"project_id": project_id}
+    return crud_ocr_project.get_project_data(db=db, projectId=project_id)
 
